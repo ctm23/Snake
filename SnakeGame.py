@@ -19,8 +19,9 @@ dis = pygame.display.set_mode(size=(DIS_W, DIS_H))
 pygame.display.set_caption('SNAKE!')
 clock = pygame.time.Clock()
 font_style = pygame.font.SysFont('calibri', 30)
-high_score = 0
-
+saved_high_score = open('highscore.txt', 'r')
+high_score = int(saved_high_score.read())
+saved_high_score.close()
 
 def message(msg, color, x, y):
     # Displays a game message
@@ -42,6 +43,7 @@ def play_game():
     x_delta, y_delta = 0, 0
     snake_list = []
     game_over = False
+    pause_game = False
     food_x = round(random.randrange(0, DIS_W - BLOCK) / BLOCK) * BLOCK
     food_y = round(random.randrange(0, DIS_H - BLOCK) / BLOCK) * BLOCK
 
@@ -52,6 +54,10 @@ def play_game():
                 pygame.quit()
                 sys.exit()
             if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_p:
+                    pause_game = True
+                if event.key == pygame.K_c:
+                    pause_game = False
                 if event.key == pygame.K_LEFT or event.key == pygame.K_a:
                     x_delta, y_delta = -BLOCK, 0
                 if event.key == pygame.K_RIGHT or event.key == pygame.K_d:
@@ -60,6 +66,11 @@ def play_game():
                     x_delta, y_delta = 0, -BLOCK
                 if event.key == pygame.K_DOWN or event.key == pygame.K_s:
                     x_delta, y_delta = 0, BLOCK
+
+        if pause_game:
+            message("Game Paused - press C to continue", WHITE, DIS_W/4, DIS_H/4)
+            pygame.display.update()
+            continue
 
         x += x_delta
         y += y_delta
@@ -97,6 +108,9 @@ def play_game():
             if event.type == pygame.KEYDOWN and event.key == pygame.K_c:
                 play_game()
             if event.type == pygame.QUIT:
+                new_high_score = open('highscore.txt', 'w')
+                new_high_score.write(str(high_score))
+                new_high_score.close()
                 pygame.quit()
                 sys.exit()
 

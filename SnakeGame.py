@@ -11,7 +11,7 @@ BLUE = (0, 0, 255)
 WHITE = (255, 255, 255)
 SPEED = 15
 BLOCK = 25
-DIS_W, DIS_H = 1200, 1000
+DIS_W, DIS_H = 1000, 800
 
 # Setting up the game
 pygame.init()

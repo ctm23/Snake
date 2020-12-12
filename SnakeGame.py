@@ -23,6 +23,7 @@ saved_high_score = open('highscore.txt', 'r')
 high_score = int(saved_high_score.read())
 saved_high_score.close()
 
+
 def message(msg, color, x, y):
     # Displays a game message
     rend_msg = font_style.render(msg, True, color)
@@ -33,6 +34,12 @@ def draw_snake(snake_list):
     # Renders the snake
     for x in snake_list:
         pygame.draw.rect(dis, BLUE, [x[0], x[1], BLOCK, BLOCK])
+
+
+def save_high():
+    new_high_score = open('highscore.txt', 'w')
+    new_high_score.write(str(high_score))
+    new_high_score.close()
 
 
 def play_game():
@@ -51,6 +58,7 @@ def play_game():
     while not game_over:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
+                save_high()
                 pygame.quit()
                 sys.exit()
             if event.type == pygame.KEYDOWN:
@@ -108,9 +116,7 @@ def play_game():
             if event.type == pygame.KEYDOWN and event.key == pygame.K_c:
                 play_game()
             if event.type == pygame.QUIT:
-                new_high_score = open('highscore.txt', 'w')
-                new_high_score.write(str(high_score))
-                new_high_score.close()
+                save_high()
                 pygame.quit()
                 sys.exit()
 
